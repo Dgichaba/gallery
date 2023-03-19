@@ -1,29 +1,43 @@
-pipeline{
+pipeline {
     agent any
-    tools{nodejs 'node'}
-    stages{
-        stage('software installations and git cloning'){
-        steps{ git 'https://github.com/Dgichaba/gallery.git'
-        sh 'npm install'
-       
-        }
-        }
-       
-        stage('Build'){
-            steps{
-                echo'build succesful'
-            }
-        }
-        stage('Tests'){
+    tools {
+        nodejs '19.8.0'
+    }
+    stages {
+        stage('Start') {
             steps {
-                sh 'npm test'}
-        }
-        stage('deploy to render'){
-            steps{
-                httpRequest httpMode: 'POST', responseHandle: 'NONE', url: 'https://api.render.com/deploy/srv-cg5por4eoogqpifhfvog?key=WvxZ77ty-Kc', wrapAsMultipart: false
-                echo 'Deploy to render was a success'
-               
+                echo 'Build is starting'
             }
         }
+        stage('Clone github repository') {
+            steps {
+                git url: 'https://github.com/Dgichaba/gallery.git', branch: 'master'
 
-
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+                bat 'npm install'
+            }
+        }
+stage('Build'){
+   steps{
+echo('Build successful')
+            }
+        }
+       
+         stage('deploy'){
+            steps {
+                bat 'curl -X POST https://api.render.com/deploy/srv-cg5por4eoogqpifhfvog?key=WvxZ77ty-Kc'
+           
+            }
+        }
+       
+       
+        stage('End') {
+            steps {
+                echo 'Deployment completed'
+            }
+        }
+    }
+}
