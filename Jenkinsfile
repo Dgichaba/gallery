@@ -42,12 +42,16 @@ echo('Build successful')
     }
 }
 post{
-    always{       
+    always{  
+            success{
+            slackSend channel: '#test-slack-integration-to-jenkins',  color: '#c0c0c0', message: "Repo: ${env.JOB_NAME} - BuildNo: ${env.BUILD_NUMBER} - live site: ${env.Live_Site}"
+        }     
             failure {       
             emailext body: "RepoName-: ${env.JOB_NAME} - BuildNo: ${env.BUILD_NUMBER} - live site: ${env.Live_Site}",
             subject: 'Gallery-Jenkins-Deployment',
             to: 'dorothy1cherotich@gmail.com'
             }
     }
+            
 }
 
