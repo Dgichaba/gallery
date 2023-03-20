@@ -10,6 +10,8 @@ https://gallery-app1.onrender.com/
 * Chrome browser
 * Jenkins
 * Atlas
+* Render
+* Slack
 ## Technologies Used
 * Node js
 * Express
